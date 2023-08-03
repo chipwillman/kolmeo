@@ -6,7 +6,7 @@ namespace Kolmeo.Services
     public interface IProductService
     {
         Task<GetProductModel> GetProductModel(int id);
-        Task<GetProductsModel> GetProductModels(int count, int skip);
+        Task<GetProductsModel> GetProductModels(string name, int count, int skip);
         Task<GetProductModel> SaveProductModel(PostProductModel postProductModel);
         Task<GetProductModel> UpdateProductModel(int id, PostProductModel productModel);
         Task<bool> DeleteProductModel(int id);
@@ -39,10 +39,10 @@ namespace Kolmeo.Services
             return null;
         }
 
-        public async Task<GetProductsModel> GetProductModels(int count, int skip)
+        public async Task<GetProductsModel> GetProductModels(string query, int count, int skip)
         {
             var result = new GetProductsModel();
-            var products = await _repository.GetProducts(count, skip);
+            var products = await _repository.GetProducts(query, count, skip);
             result.Skip = skip;
 
             if (products != null)

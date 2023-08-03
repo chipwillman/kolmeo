@@ -51,14 +51,14 @@ namespace Kolmeo.Tests.Business
         {
             var loggingMock = new Mock<ILogger<ProductService>>();
             var repositoryMock = new Mock<IProductRepository>();
-            repositoryMock.Setup(r => r.GetProducts(It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(new[] { new Product { Id = 1, Name = "blue pen", Description = "a blue ball point pen", Price = 2.49m, IsDeleted = false },
+            repositoryMock.Setup(r => r.GetProducts(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(new[] { new Product { Id = 1, Name = "blue pen", Description = "a blue ball point pen", Price = 2.49m, IsDeleted = false },
                 new Product { Id = 2, Name = "green pen", Description = "a green ball point pen", Price = 2.89m, IsDeleted = false },
                 new Product { Id = 3, Name = "red pen", Description = "a red ball point pen", Price = 2.59m, IsDeleted = false },
                 new Product { Id = 4, Name = "black pen", Description = "a black ball point pen", Price = 2.69m, IsDeleted = false }  }));
             repositoryMock.Setup(r => r.GetProductCount()).Returns(Task.FromResult(24));
             var service = new ProductService(repositoryMock.Object, loggingMock.Object);
 
-            var product = await service.GetProductModels(4, 20);
+            var product = await service.GetProductModels("pen", 4, 20);
             Assert.AreEqual(4, product.Count);
             Assert.AreEqual(24, product.TotalCount); 
         }

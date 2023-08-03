@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddDbContext<KolmeoContext>();
+builder.Services.AddHealthChecks();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
@@ -31,5 +32,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 app.Run();

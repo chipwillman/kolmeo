@@ -8,7 +8,7 @@ namespace Kolmeo.Data
     public interface IProductRepository
     {
         Task<Product> GetProduct(int id);
-        Task<Product[]> GetProducts(int take, int skip);
+        Task<Product[]> GetProducts(string query, int take, int skip);
         Task<Product> CreateProduct(Product product);
         Task<Product> UpdateProduct(Product product);
         Task<bool> DeleteProduct(int id);
@@ -73,9 +73,14 @@ namespace Kolmeo.Data
             return product;
         }
 
-        public async Task<Product[]> GetProducts(int take, int skip)
+        public async Task<Product[]> GetProducts(string query, int take, int skip)
         {
-            var products = await Context.Products.Where(p => !p.IsDeleted).Skip(skip).Take(take).ToArrayAsync();
+            var productsPredicate = Context.Products.Where(p => !p.IsDeleted);
+            if (!string.IsNullOrEmpty(query))
+            {
+                productsPredicate = productsPredicate.Where(p => p.Name.Contains(query) || p.Description.Contains(query));
+            }
+            var products = await productsPredicate.Skip(skip).Take(take).ToArrayAsync();
             return products;
         }
 
