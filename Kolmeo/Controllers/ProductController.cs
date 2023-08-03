@@ -26,7 +26,7 @@ namespace Kolmeo.Controllers
         /// <param name="offset"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<GetProductsModel>> GetProducts(string query = "", int count = 20, int offset = 0)
+        public async Task<ActionResult<GetProductsModel>> GetProducts(string? query = "", int count = 20, int offset = 0)
         {
             _logger.LogInformation($"GetProducts called with search string [{query}] count {count} and offset {offset}");
             var products = await _productService.GetProductModels(query, count, offset);
